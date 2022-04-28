@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
 
 using Utilities;
 using ClusterLib;
@@ -95,7 +94,7 @@ namespace ClusterSrv
                     }
                     catch (Exception ex)
                     {
-                        _Logger.Error(ex, Resources.ConsoleCommandError);
+                        Logger.Exception<ClusterSrv>(ex, Resources.ConsoleCommandError);
                     }
 
                 } while (cki.Key != ConsoleKey.Q);
@@ -105,7 +104,8 @@ namespace ClusterSrv
             }
             catch (Exception ex)
             {
-                _Logger.Fatal(ex, Resources.ServerRunningError);
+                Logger.Exception<ClusterSrv>(ex, Resources.ServerRunningError);
+                Logger.Fatal<ClusterSrv>($"{Resources.ServerRunningError} => {ex}");
             }
         }
 
@@ -122,7 +122,8 @@ namespace ClusterSrv
             }
             catch (Exception ex)
             {
-                _Logger.Fatal(ex, Resources.ServerRunningError, ex);
+                Logger.Exception<ClusterSrv>(ex, Resources.ServerRunningError);
+                Logger.Fatal<ClusterSrv>($"{Resources.ServerRunningError} => {ex}");
                 throw;
             }
         }
@@ -167,7 +168,6 @@ namespace ClusterSrv
             return cst;
         }
 
-        static Logger _Logger = LogManager.GetCurrentClassLogger();
         static Cluster _Cluster;
         /** */
         Object ClusterControl2 { get; set; }

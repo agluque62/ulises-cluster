@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using NLog;
 
-namespace helpers
+namespace Utilities
 {
     public class Logger
     {
@@ -57,7 +57,7 @@ namespace helpers
         {
             Log<T>(LogLevel.Fatal, msg, caller, lineNumber);
         }
-        public static void Exception<T>( Exception x, string msg1 = "",
+        public static void Exception<T>(Exception x, string msg1 = "",
             [System.Runtime.CompilerServices.CallerMemberName] string caller = null,
             [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
 
@@ -66,6 +66,5 @@ namespace helpers
             Log<T>(LogLevel.Error, msg, caller, lineNumber);
             NLog.LogManager.GetCurrentClassLogger().Trace(x);
         }
-
     }
 }

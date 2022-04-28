@@ -68,6 +68,7 @@
     <Compile Include="CustomBinaryFormatter.cs" />
     <Compile Include="EventQeue.cs" />
     <Compile Include="LocalFileAppSettingsProvider.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="RegistrySettingsProvider.cs" />
     <Compile Include="UdpSocket.cs" />
     <Compile Include="Native.cs" />
