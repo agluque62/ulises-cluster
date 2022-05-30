@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" 
+           Name="Cluster Service for Ulises" 
+           Language="1033" 
+           Version="1.0.0.0" 
+           Manufacturer="Grupo Amper" 
+           UpgradeCode="a6108f0f-4865-4d72-8f45-d5f6f1967774">
+    
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
+		<MediaTemplate EmbedCab="yes" />
+    <Property Id="NETFRAMEWORK452">
+      <RegistrySearch Id="NetFramework" Root="HKLM" Type="raw" Name="Release" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"/>
+    </Property>
+    <Condition Message="Esta aplicacion requiere .NET Framework 4.5.2. Instale .NET Framework 4.5.2 y reintente la instalacion.">
+      <![CDATA[Installed OR NETFRAMEWORK452>="#379893"]]>
+    </Condition>
+
+    <Feature Id="ProductFeature" Title="UlisesClusterSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="UlisesClusterSetup" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+		</ComponentGroup>
+	</Fragment>
+</Wix>
