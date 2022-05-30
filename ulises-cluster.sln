@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{A198476D-C200-4AFF-ADAA-67BA4AFF7C62}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "UlisesClusterSetup", "Setup\UlisesClusterSetup\UlisesClusterSetup.wixproj", "{62452C68-7121-4D28-8C2C-EB1FBB10E3BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00234A06-85A1-40B0-B6BB-1B664D7D8F1C} = {00234A06-85A1-40B0-B6BB-1B664D7D8F1C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

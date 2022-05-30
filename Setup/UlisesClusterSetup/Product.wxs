@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" 
-           Name="Cluster Service for Ulises" 
-           Language="1033" 
-           Version="1.0.0.0" 
-           Manufacturer="Grupo Amper" 
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="*"
+           Name="Cluster Service for Ulises"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="Grupo Amper"
            UpgradeCode="a6108f0f-4865-4d72-8f45-d5f6f1967774">
-    
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
-		<MediaTemplate EmbedCab="yes" />
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
+    <MediaTemplate EmbedCab="yes" />
     <Property Id="NETFRAMEWORK452">
       <RegistrySearch Id="NetFramework" Root="HKLM" Type="raw" Name="Release" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"/>
     </Property>
@@ -18,25 +20,338 @@
       <![CDATA[Installed OR NETFRAMEWORK452>="#379893"]]>
     </Condition>
 
+    <!--Propiedades  de Configuracion -->
+    <Property Id="TICK" Value="1000" >
+      <RegistrySearch Id='TICK_Property' Name='TICK_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="TIMETOSTART" Value="10000" >
+      <RegistrySearch Id='TIMETOSTART_Property' Name='TIMETOSTART_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="REMOTETIMEOUT" Value="5000" >
+      <RegistrySearch Id='REMOTETIMEOUT_Property' Name='REMOTETIMEOUT_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <Property Id="IP" Value="255.255.255.255" >
+      <RegistrySearch Id='IP_Property' Name='IP_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="PORT" Value="6000" >
+      <RegistrySearch Id='PORT_Property' Name='PORT_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="EPIP" Value="255.255.255.255" >
+      <RegistrySearch Id='EPIP_Property' Name='EPIP_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="EPPORT" Value="6001" >
+      <RegistrySearch Id='EPPORT_Property' Name='EPPORT_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <Property Id="ADAPTERIP1" Value="255.255.255.255" >
+      <RegistrySearch Id='ADAPTERIP1_Property' Name='ADAPTERIP1_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERIP1" Value="255.255.255.255" >
+      <RegistrySearch Id='CLUSTERIP1_Property' Name='CLUSTERIP1_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERMASK1" Value="255.255.255.0" >
+      <RegistrySearch Id='CLUSTERMASK1_Property' Name='CLUSTERMASK1_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <Property Id="ADAPTERIP2" Value="255.255.255.255" >
+      <RegistrySearch Id='ADAPTERIP2_Property' Name='ADAPTERIP2_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERIP2" Value="255.255.255.255" >
+      <RegistrySearch Id='CLUSTERIP2_Property' Name='CLUSTERIP2_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERMASK2" Value="255.255.255.0" >
+      <RegistrySearch Id='CLUSTERMASK2_Property' Name='CLUSTERMASK2_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <Property Id="ADAPTERIP3" Value="255.255.255.255" >
+      <RegistrySearch Id='ADAPTERIP3_Property' Name='ADAPTERIP3_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERIP3" Value="255.255.255.255" >
+      <RegistrySearch Id='CLUSTERIP3_Property' Name='CLUSTERIP3_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+    <Property Id="CLUSTERMASK3" Value="255.255.255.0" >
+      <RegistrySearch Id='CLUSTERMASK3_Property' Name='CLUSTERMASK3_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <Property Id="MAINTENANCESERVERFORTRAPS" Value="255.255.255.255" >
+      <RegistrySearch Id='MAINTENANCESERVERFORTRAPS_Property' Name='MAINTENANCESERVERFORTRAPS_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
+
+    <!-- Propiedades del HMI -->
+    <WixVariable Id="WixUIDialogBmp"  Value="bkg-image.jpg" Overridable="yes"/>
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner-image.jpg" Overridable="yes"/>
+
     <Feature Id="ProductFeature" Title="UlisesClusterSetup" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="UlisesClusterSetup" />
-			</Directory>
-		</Directory>
-	</Fragment>
+    <UIRef Id="MyWixUI_Mondo"/>
 
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
-		</ComponentGroup>
-	</Fragment>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="COMPANYFOLDER" Name="UlisesV5000">
+          <Directory Id="INSTALLFOLDER" Name="UlisesV5000Cluster" >
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER" Source="$(var.ClusterSrv.TargetDir)">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id ="cluster_exe" Guid="{BBC1DA84-1069-4B5C-8C46-CF931B7183EC}">
+        <File Id="ClusterSrvExe" Name="ClusterSrv.exe"></File>
+        <ServiceInstall
+          Id="SrvInstaller"
+          Type="ownProcess"
+          Name="ClusterSrv"
+          DisplayName="ClusterSrv"
+          Description="Cluster Service for Ulises V5000"
+          Start="auto"
+          Account="LocalSystem"
+          ErrorControl="ignore"
+          Interactive="no">
+          <ServiceConfig DelayedAutoStart="yes" OnInstall="yes"  OnReinstall="yes" OnUninstall="no"></ServiceConfig>
+          <ServiceDependency Id="dot3svc"/>
+          <util:ServiceConfig
+                  FirstFailureActionType='restart'
+                  SecondFailureActionType='restart'
+                  ThirdFailureActionType='restart'
+                  RestartServiceDelayInSeconds='30'
+                  ResetPeriodInDays='1'/>
+        </ServiceInstall>
+        <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="ClusterSrv" Wait="yes" />
+        <File Id="ClusterLibDll" Name="ClusterLib.dll"></File>
+        <File Id="UtilitiesDll" Name="Utilities.dll"></File>
+        <File Id="NLogDll" Name="NLog.dll"></File>
+      </Component>
+      <Component Id="cluster_data" Guid="{77F7D9F5-9EB2-4393-87FF-6C110DAC658A}">
+        <File Id="NLogConfig" Name="Nlog.config"></File>
+        <File Id="ClusterSrvExeConfig" Name="ClusterSrv.exe.config"></File>
+        <util:XmlFile Id="TICK_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='Tick'[\]]/value"
+                        Value="[TICK]"/>
+        <util:XmlFile Id="TIMETOSTART_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='TimeToStart'[\]]/value"
+                        Value="[TIMETOSTART]"/>
+        <util:XmlFile Id="REMOTETIMEOUT_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='RemoteTimeout'[\]]/value"
+                        Value="[REMOTETIMEOUT]"/>
+        <util:XmlFile Id="IP_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='Ip'[\]]/value"
+                        Value="[IP]"/>
+        <util:XmlFile Id="PORT_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='Port'[\]]/value"
+                        Value="[PORT]"/>
+        <util:XmlFile Id="EPIP_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='EpIp'[\]]/value"
+                        Value="[EPIP]"/>
+        <util:XmlFile Id="EPPORT_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='EpPort'[\]]/value"
+                        Value="[EPPORT]"/>
+        <util:XmlFile Id="ADAPTERIP1_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='AdapterIp1'[\]]/value"
+                        Value="[ADAPTERIP1]"/>
+        <util:XmlFile Id="CLUSTERIP1_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterIp1'[\]]/value"
+                        Value="[CLUSTERIP1]"/>
+        <util:XmlFile Id="CLUSTERMASK1_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterMask1'[\]]/value"
+                        Value="[CLUSTERMASK1]"/>
+        <util:XmlFile Id="ADAPTERIP2_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='AdapterIp2'[\]]/value"
+                        Value="[ADAPTERIP2]"/>
+        <util:XmlFile Id="CLUSTERIP2_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterIp2'[\]]/value"
+                        Value="[CLUSTERIP2]"/>
+        <util:XmlFile Id="CLUSTERMASK2_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterMask2'[\]]/value"
+                        Value="[CLUSTERMASK2]"/>
+        <util:XmlFile Id="ADAPTERIP3_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='AdapterIp3'[\]]/value"
+                        Value="[ADAPTERIP3]"/>
+        <util:XmlFile Id="CLUSTERIP3_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterIp3'[\]]/value"
+                        Value="[CLUSTERIP3]"/>
+        <util:XmlFile Id="CLUSTERMASK3_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='ClusterMask3'[\]]/value"
+                        Value="[CLUSTERMASK3]"/>
+        <util:XmlFile Id="MAINTENANCESERVERFORTRAPS_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='MaintenanceServerForTraps'[\]]/value"
+                        Value="[MAINTENANCESERVERFORTRAPS]"/>
+      </Component>
+      <Component Id="cluster_scripts" Guid="{2EC99A70-A837-4086-873E-8CF3D0C597D3}">
+        <File Id="ReplicationStatusBat" Source="$(var.ClusterSrv.TargetDir)Scripts\replication_status.bat"></File>
+        <File Id="DataReplicationStatusbat" Source="$(var.ClusterSrv.TargetDir)Scripts\data_replication_status.bat"></File>
+        <File Id="DelarpBat" Source="$(var.ClusterSrv.TargetDir)Scripts\delarp.bat"></File>
+        <File Id="DataReplicationMasterStatusSql" Source="$(var.ClusterSrv.TargetDir)Scripts\data_replication_master_status.sql"></File>
+        <File Id="DataReplicationSlaveStatusSql" Source="$(var.ClusterSrv.TargetDir)Scripts\data_replication_slave_status.sql"></File>
+        <File Id="ReplicationStatusSql" Source="$(var.ClusterSrv.TargetDir)Scripts\replication_status.sql"></File>
+      </Component>
+
+      <Component Id="sp_registry" Guid="*" Permanent="yes">
+        <RegistryKey Id="sp_registry_entries" Root="HKLM" Key="SOFTWARE\Wix\AG_CLUSTER" Action="create">
+          <RegistryValue Name='TICK_Property' Value='[TICK]' Type='string' />
+          <RegistryValue Name='TIMETOSTART_Property' Value='[TIMETOSTART]' Type='string' />
+          <RegistryValue Name='REMOTETIMEOUT_Property' Value='[REMOTETIMEOUT]' Type='string' />
+
+          <RegistryValue Name='IP_Property' Value='[IP]' Type='string' />
+          <RegistryValue Name='PORT_Property' Value='[PORT]' Type='string' />
+          <RegistryValue Name='EPIP_Property' Value='[EPIP]' Type='string' />
+          <RegistryValue Name='EPPORT_Property' Value='[EPPORT]' Type='string' />
+
+          <RegistryValue Name='ADAPTERIP1_Property' Value='[ADAPTERIP1]' Type='string' />
+          <RegistryValue Name='CLUSTERIP1_Property' Value='[CLUSTERIP1]' Type='string' />
+          <RegistryValue Name='CLUSTERMASK1_Property' Value='[CLUSTERMASK1]' Type='string' />
+
+          <RegistryValue Name='ADAPTERIP2_Property' Value='[ADAPTERIP2]' Type='string' />
+          <RegistryValue Name='CLUSTERIP2_Property' Value='[CLUSTERIP2]' Type='string' />
+          <RegistryValue Name='CLUSTERMASK2_Property' Value='[CLUSTERMASK2]' Type='string' />
+
+          <RegistryValue Name='ADAPTERIP3_Property' Value='[ADAPTERIP3]' Type='string' />
+          <RegistryValue Name='CLUSTERIP3_Property' Value='[CLUSTERIP3]' Type='string' />
+          <RegistryValue Name='CLUSTERMASK3_Property' Value='[CLUSTERMASK3]' Type='string' />
+
+          <RegistryValue Name='MAINTENANCESERVERFORTRAPS_Property' Value='[MAINTENANCESERVERFORTRAPS]' Type='string' />
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <!--UI-->
+  <Fragment>
+    <UI Id="MyWixUI_Mondo">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Mondo" />
+
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed AND NOT PATCH</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <!--<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2">LicenseAccepted = "1"</Publish>-->
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="ClusterOptionsDlg" Order="2">LicenseAccepted = "1"</Publish>
+      <!--<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="SetupTypeDlg" Order="2">LicenseAccepted = "1"</Publish>-->
+
+      <Publish Dialog="SetupTypeDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="SetupTypeDlg" Control="TypicalButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="SetupTypeDlg" Control="CustomButton" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+      <Publish Dialog="SetupTypeDlg" Control="CompleteButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+      <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="SetupTypeDlg" Order="2">WixUI_InstallMode = "InstallCustom"</Publish>
+      <Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">WixUI_InstallMode = "InstallCustom"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="SetupTypeDlg" Order="2">WixUI_InstallMode = "InstallTypical" OR WixUI_InstallMode = "InstallComplete"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="3">WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="4">WixUI_InstallMode = "Repair" OR WixUI_InstallMode = "Remove"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">WixUI_InstallMode = "Update"</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Publish Dialog="ClusterOptionsDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="ClusterOptionsDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+      <!--Dialogo de Opciones--> 
+      
+      <Dialog Id="ClusterOptionsDlg" Width="370" Height="270" Title="Ulises Cluster Service Installation" NoMinimize="yes">
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes">
+          <Text></Text>
+        </Control>
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes">
+          <Text>Sacta Proxy. Opciones de Instalacion</Text>
+        </Control>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+
+        <Control Id="Control" Type="Text" X="5" Y="50" Width="80" Height="10" Text="Control"></Control>
+        <Control Id="Line1" Type="Line" X="5" Y="59" Width="365" Height="0" />
+        <Control Id="Ip" Type="Text" X="10" Y="65" Width="80" Height="10" Text="Local Ip"></Control>
+        <Control Id="vIp" Type="Edit" X="10" Y="75" Width="80" Height="15" Property="IP" />
+        <Control Id="Port" Type="Text" X="100" Y="65" Width="80" Height="10" Text="Local Port"></Control>
+        <Control Id="vPort" Type="Edit" X="100" Y="75" Width="80" Height="15" Property="PORT" />
+        <Control Id="EpIp" Type="Text" X="190" Y="65" Width="80" Height="10" Text="Remote Ip"></Control>
+        <Control Id="vEpIp" Type="Edit" X="190" Y="75" Width="80" Height="15" Property="EPIP" />
+        <Control Id="EpPort" Type="Text" X="280" Y="65" Width="80" Height="10" Text="Remote Port"></Control>
+        <Control Id="vEpPort" Type="Edit" X="280" Y="75" Width="80" Height="15" Property="EPPORT" />
+
+        <Control Id="VirtualIps" Type="Text" X="5" Y="100" Width="80" Height="10" Text="Virtual Ips"></Control>
+        <Control Id="Line2" Type="Line" X="5" Y="109" Width="365" Height="0" />
+        <Control Id="AdapterIp1" Type="Text" X="10" Y="115" Width="80" Height="10" Text="Adapter1 Ip"></Control>
+        <Control Id="vAdapterIp1" Type="Edit" X="10" Y="125" Width="80" Height="15" Property="ADAPTERIP1" />
+        <Control Id="ClusterIp1" Type="Text" X="100" Y="115" Width="80" Height="10" Text="Virtual Ip 1"></Control>
+        <Control Id="vClusterIp1" Type="Edit" X="100" Y="125" Width="80" Height="15" Property="CLUSTERIP1" />
+        <Control Id="ClusterMask1" Type="Text" X="190" Y="115" Width="80" Height="10" Text="Virtual Ip 1 Mask"></Control>
+        <Control Id="vClusterMask1" Type="Edit" X="190" Y="125" Width="80" Height="15" Property="CLUSTERMASK1" />
+
+        <Control Id="AdapterIp2" Type="Text" X="10" Y="145" Width="80" Height="10" Text="Adapter2 Ip"></Control>
+        <Control Id="vAdapterIp2" Type="Edit" X="10" Y="155" Width="80" Height="15" Property="ADAPTERIP2" />
+        <Control Id="ClusterIp2" Type="Text" X="100" Y="145" Width="80" Height="10" Text="Virtual Ip 2"></Control>
+        <Control Id="vClusterIp2" Type="Edit" X="100" Y="155" Width="80" Height="15" Property="CLUSTERIP2" />
+        <Control Id="ClusterMask2" Type="Text" X="190" Y="145" Width="80" Height="10" Text="Virtual Ip 2 Mask"></Control>
+        <Control Id="vClusterMask2" Type="Edit" X="190" Y="155" Width="80" Height="15" Property="CLUSTERMASK2" />
+
+        <Control Id="AdapterIp3" Type="Text" X="10" Y="175" Width="80" Height="10" Text="Adapter3 Ip"></Control>
+        <Control Id="vAdapterIp3" Type="Edit" X="10" Y="185" Width="80" Height="15" Property="ADAPTERIP3" />
+        <Control Id="ClusterIp3" Type="Text" X="100" Y="175" Width="80" Height="10" Text="Virtual Ip 3"></Control>
+        <Control Id="vClusterIp3" Type="Edit" X="100" Y="185" Width="80" Height="15" Property="CLUSTERIP3" />
+        <Control Id="ClusterMask3" Type="Text" X="190" Y="175" Width="80" Height="10" Text="Virtual Ip 3 Mask"></Control>
+        <Control Id="vClusterMask3" Type="Edit" X="190" Y="185" Width="80" Height="15" Property="CLUSTERMASK3" />
+
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="Back"/>
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="Next" />
+
+      </Dialog>
+      
+    </UI>
+    <UIRef Id="WixUI_Common" />
+  </Fragment>
+
 </Wix>

@@ -250,7 +250,7 @@ namespace ClusterLib
                     foreach (UnicastIPAddressInformation ip in ips)
                     {
                         string strIp = ip.Address.ToString();
-                        Logger.Debug<Cluster>($"IPV4 {strIp} Checking...");
+                        Logger.Trace<Cluster>($"IPV4 {strIp} Checking...");
 
                         var cfgItemIp = _Settings.VirtualIps.Where(i => i.AdapterIp == strIp).FirstOrDefault();
                         if (cfgItemIp != null)
@@ -276,7 +276,7 @@ namespace ClusterLib
                 try
                 {
                     var reply = (new Ping()).Send(ipc.ClusterIp, 500);
-                    Logger.Debug<Cluster>(String.Format("PingReply {1,8} From {0,15}, {2,6} ms",
+                    Logger.Trace<Cluster>(String.Format("PingReply {1,8} From {0,15}, {2,6} ms",
                         reply.Address != null ? reply.Address.ToString() : ipc.ClusterIp, reply.Status.ToString(), reply.RoundtripTime));
 
                     if (reply != null && reply.Status == IPStatus.Success)
