@@ -21,13 +21,7 @@ namespace ClusterSrv
         {
             if (args.Length >= 1)
             {
-                if (args[0] == "-cfg")
-                {
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new ClusterConfig());
-                }
-                else if (args[0] == "-install")
+                if (args[0] == "-install")
                 {
                     Native.Kernel32.AttachConsole(Native.Ntdll.GetParentProcessID(Process.GetCurrentProcess().Id));
 
