@@ -19,6 +19,7 @@ namespace ClusterSrv
 
     public partial class ClusterSrv : ServiceBase
     {
+        static string NodeId => System.Environment.MachineName;
         public ClusterSrv()
         {
             InitializeComponent();
@@ -34,9 +35,9 @@ namespace ClusterSrv
             ClusterSrv Server = new ClusterSrv();
             try
             {
-                Native.Kernel32.SetConsoleTitle(" CLUSTER SRV (" + Settings.Default.NodeId + ") ");
+                Native.Kernel32.SetConsoleTitle(" CLUSTER SRV (" + NodeId + ") ");
 
-                Console.WriteLine(Resources.ConsoleMenu.Replace("\\n", Environment.NewLine), Settings.Default.NodeId);
+                Console.WriteLine(Resources.ConsoleMenu.Replace("\\n", Environment.NewLine), NodeId);
 
                 Server.OnStart(args);
                 //_Cluster = new Cluster(GetClusterSettings());
@@ -62,7 +63,7 @@ namespace ClusterSrv
                         switch (cki.Key)
                         {
                             case ConsoleKey.M:
-                                Console.WriteLine(Resources.ConsoleMenu.Replace("\\n", Environment.NewLine), Settings.Default.NodeId);
+                                Console.WriteLine(Resources.ConsoleMenu.Replace("\\n", Environment.NewLine), NodeId);
                                 break;
                             case ConsoleKey.A:
                                 _Cluster?.Activate();
@@ -83,7 +84,7 @@ namespace ClusterSrv
                             case ConsoleKey.Q:
                                 break;
                             case ConsoleKey.H:
-                                Console.WriteLine(Resources.ConsoleMenu.Replace("\n", Environment.NewLine), Settings.Default.NodeId);
+                                Console.WriteLine(Resources.ConsoleMenu.Replace("\n", Environment.NewLine), NodeId);
                                 break;
 #if DEBUG
                             case ConsoleKey.N:
@@ -143,7 +144,7 @@ namespace ClusterSrv
             Settings st = Settings.Default;
             ClusterSettings cst = new ClusterSettings();
 
-            cst.NodeId = st.NodeId;
+            cst.NodeId = NodeId;
             cst.Ip = st.Ip;
             cst.Port = st.Port;
             cst.EpIp = st.EpIp;

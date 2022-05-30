@@ -12,7 +12,7 @@ namespace ClusterSrv.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -23,219 +23,156 @@ namespace ClusterSrv.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Nodo 1")]
-        public string NodeId {
-            get {
-                return ((string)(this["NodeId"]));
-            }
-            set {
-                this["NodeId"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("6000")]
         public int Port {
             get {
                 return ((int)(this["Port"]));
             }
-            set {
-                this["Port"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("6001")]
         public int EpPort {
             get {
                 return ((int)(this["EpPort"]));
             }
-            set {
-                this["EpPort"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.12.90.99")]
         public string ClusterIp1 {
             get {
                 return ((string)(this["ClusterIp1"]));
             }
-            set {
-                this["ClusterIp1"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.20.90.99")]
         public string ClusterIp2 {
             get {
                 return ((string)(this["ClusterIp2"]));
             }
-            set {
-                this["ClusterIp2"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("255.255.255.0")]
         public string ClusterMask1 {
             get {
                 return ((string)(this["ClusterMask1"]));
             }
-            set {
-                this["ClusterMask1"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("255.255.255.0")]
         public string ClusterMask2 {
             get {
                 return ((string)(this["ClusterMask2"]));
             }
-            set {
-                this["ClusterMask2"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.1")]
         public string Ip {
             get {
                 return ((string)(this["Ip"]));
             }
-            set {
-                this["Ip"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.1")]
         public string EpIp {
             get {
                 return ((string)(this["EpIp"]));
             }
-            set {
-                this["EpIp"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10000")]
         public int TimeToStart {
             get {
                 return ((int)(this["TimeToStart"]));
             }
-            set {
-                this["TimeToStart"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.20.90.1")]
         public string AdapterIp2 {
             get {
                 return ((string)(this["AdapterIp2"]));
             }
-            set {
-                this["AdapterIp2"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.129")]
         public string MaintenanceServerForTraps {
             get {
                 return ((string)(this["MaintenanceServerForTraps"]));
             }
-            set {
-                this["MaintenanceServerForTraps"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.12.90.1")]
         public string AdapterIp1 {
             get {
                 return ((string)(this["AdapterIp1"]));
             }
-            set {
-                this["AdapterIp1"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.21.94.1")]
         public string AdapterIp3 {
             get {
                 return ((string)(this["AdapterIp3"]));
             }
-            set {
-                this["AdapterIp3"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.21.94.99")]
         public string ClusterIp3 {
             get {
                 return ((string)(this["ClusterIp3"]));
             }
-            set {
-                this["ClusterIp3"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("255.255.255.0")]
         public string ClusterMask3 {
             get {
                 return ((string)(this["ClusterMask3"]));
             }
-            set {
-                this["ClusterMask3"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int Tick {
             get {
                 return ((int)(this["Tick"]));
             }
-            set {
-                this["Tick"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5000")]
         public int RemoteTimeout {
             get {
                 return ((int)(this["RemoteTimeout"]));
-            }
-            set {
-                this["RemoteTimeout"] = value;
             }
         }
     }
