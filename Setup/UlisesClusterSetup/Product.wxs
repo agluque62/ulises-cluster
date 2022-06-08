@@ -5,7 +5,7 @@
   <Product Id="*"
            Name="Cluster Service for Ulises"
            Language="1033"
-           Version="1.0.0.0"
+           Version="!(bind.fileVersion.ClusterSrvExe)"
            Manufacturer="Grupo Amper"
            UpgradeCode="a6108f0f-4865-4d72-8f45-d5f6f1967774">
 
