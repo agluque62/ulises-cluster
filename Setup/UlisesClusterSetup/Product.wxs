@@ -30,6 +30,9 @@
     <Property Id="REMOTETIMEOUT" Value="5000" >
       <RegistrySearch Id='REMOTETIMEOUT_Property' Name='REMOTETIMEOUT_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
     </Property>
+    <Property Id="SACTAPROXYPRESENT" >
+      <RegistrySearch Id='SACTAPROXYPRESENT_Property' Name='SACTAPROXYPRESENT_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
+    </Property>
 
     <Property Id="IP" Value="255.255.255.255" >
       <RegistrySearch Id='IP_Property' Name='IP_Property' Root='HKLM' Key='SOFTWARE\Wix\AG_CLUSTER' Type='raw' />
@@ -205,6 +208,11 @@
                         File = "[#ClusterSrvExeConfig]"
                         ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='MaintenanceServerForTraps'[\]]/value"
                         Value="[MAINTENANCESERVERFORTRAPS]"/>
+
+        <util:XmlFile Id="SACTAPROXYPRESENT_cfg" Action="setValue"
+                        File = "[#ClusterSrvExeConfig]"
+                        ElementPath="/configuration/applicationSettings/ClusterSrv.Properties.Settings/setting[\[]@name='SactaProxyPresent'[\]]/value"
+                        Value="[SACTAPROXYPRESENT]"/>
       </Component>
       <Component Id="cluster_scripts" Guid="{2EC99A70-A837-4086-873E-8CF3D0C597D3}">
         <File Id="ReplicationStatusBat" Source="$(var.ClusterSrv.TargetDir)Scripts\replication_status.bat"></File>
@@ -220,6 +228,7 @@
           <RegistryValue Name='TICK_Property' Value='[TICK]' Type='string' />
           <RegistryValue Name='TIMETOSTART_Property' Value='[TIMETOSTART]' Type='string' />
           <RegistryValue Name='REMOTETIMEOUT_Property' Value='[REMOTETIMEOUT]' Type='string' />
+          <RegistryValue Name='SACTAPROXYPRESENT_Property' Value='[SACTAPROXYPRESENT]' Type='string' />
 
           <RegistryValue Name='IP_Property' Value='[IP]' Type='string' />
           <RegistryValue Name='PORT_Property' Value='[PORT]' Type='string' />
@@ -310,42 +319,65 @@
         </Control>
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
 
+        <Control Id="SactaProxy" Type="CheckBox" X="60" Y="75" Width="80" Height="15" Property='SACTAPROXYPRESENT' CheckBoxValue='1' >
+          <Text>SACTA Proxy?</Text>
+        </Control>
+        <!--<Control Id="SactaProxy1" Type="Edit" X="60" Y="95" Width="80" Height="15" Property="SACTAPROXYPRESENT" />-->
+
         <Control Id="Control" Type="Text" X="50" Y="50" Width="80" Height="10" Text="Control"></Control>
         <Control Id="Line1" Type="Line" X="50" Y="59" Width="270" Height="0" />
 
-        <Control Id="Ip" Type="Text" X="100" Y="65" Width="80" Height="10" Text="Local Ip"></Control>
-        <Control Id="vIp" Type="Edit" X="100" Y="75" Width="80" Height="15" Property="IP" />
-        <Control Id="Port" Type="Text" X="190" Y="65" Width="80" Height="10" Text="Local Port"></Control>
-        <Control Id="vPort" Type="Edit" X="190" Y="75" Width="80" Height="15" Property="PORT" />
+        <Control Id="Ip" Type="Text" X="150" Y="65" Width="80" Height="10" Text="Local Ip"></Control>
+        <Control Id="vIp" Type="Edit" X="150" Y="75" Width="80" Height="15" Property="IP" />
+        <Control Id="Port" Type="Text" X="240" Y="65" Width="80" Height="10" Text="Local Port"></Control>
+        <Control Id="vPort" Type="Edit" X="240" Y="75" Width="80" Height="15" Property="PORT" />
         
-        <Control Id="EpIp" Type="Text" X="100" Y="95" Width="80" Height="10" Text="Remote Ip"></Control>
-        <Control Id="vEpIp" Type="Edit" X="100" Y="105" Width="80" Height="15" Property="EPIP" />
-        <Control Id="EpPort" Type="Text" X="190" Y="95" Width="80" Height="10" Text="Remote Port"></Control>
-        <Control Id="vEpPort" Type="Edit" X="190" Y="105" Width="80" Height="15" Property="EPPORT" />
+        <Control Id="EpIp" Type="Text" X="150" Y="95" Width="80" Height="10" Text="Remote Ip"></Control>
+        <Control Id="vEpIp" Type="Edit" X="150" Y="105" Width="80" Height="15" Property="EPIP" />
+        <Control Id="EpPort" Type="Text" X="240" Y="95" Width="80" Height="10" Text="Remote Port"></Control>
+        <Control Id="vEpPort" Type="Edit" X="240" Y="105" Width="80" Height="15" Property="EPPORT" />
 
         <Control Id="VirtualIps" Type="Text" X="50" Y="130" Width="80" Height="10" Text="Virtual Ips"></Control>
         <Control Id="Line2" Type="Line" X="50" Y="139" Width="270" Height="0" />
 
-        <Control Id="AdapterIp1" Type="Text" X="60" Y="145" Width="80" Height="10" Text="Adapter1 Ip"></Control>
-        <Control Id="vAdapterIp1" Type="Edit" X="60" Y="155" Width="80" Height="15" Property="ADAPTERIP1" />
-        <Control Id="AdapterIp2" Type="Text" X="60" Y="175" Width="80" Height="10" Text="Adapter1 Virtual Ip"></Control>
-        <Control Id="vAdapterIp2" Type="Edit" X="60" Y="185" Width="80" Height="15" Property="CLUSTERIP1" />
-        <Control Id="AdapterIp3" Type="Text" X="60" Y="205" Width="80" Height="10" Text="Adapter1 Mask"></Control>
-        <Control Id="vAdapterIp3" Type="Edit" X="60" Y="215" Width="80" Height="15" Property="CLUSTERMASK1" />
+        <Control Id="Adapter1Ip" Type="Text" X="60" Y="145" Width="80" Height="10" Text="Adapter1 Ip" />
+        <Control Id="vAdapter1Ip" Type="Edit" X="60" Y="155" Width="80" Height="15" Property="ADAPTERIP1" />
+        <Control Id="Adapter1vIp" Type="Text" X="60" Y="175" Width="80" Height="10" Text="Adapter1 Virtual Ip" />
+        <Control Id="vAdapter1vIp" Type="Edit" X="60" Y="185" Width="80" Height="15" Property="CLUSTERIP1" />
+        <Control Id="Adapter1Msc" Type="Text" X="60" Y="205" Width="80" Height="10" Text="Adapter1 Mask" />
+        <Control Id="vAdapter1Msc" Type="Edit" X="60" Y="215" Width="80" Height="15" Property="CLUSTERMASK1" />
         
-        <Control Id="ClusterIp1" Type="Text" X="150" Y="145" Width="80" Height="10" Text="Adapter2 Ip"></Control>
-        <Control Id="vClusterIp1" Type="Edit" X="150" Y="155" Width="80" Height="15" Property="ADAPTERIP2" />
-        <Control Id="ClusterIp2" Type="Text" X="150" Y="175" Width="80" Height="10" Text="Adapter2 Virtual Ip"></Control>
-        <Control Id="vClusterIp2" Type="Edit" X="150" Y="185" Width="80" Height="15" Property="CLUSTERIP2" />
-        <Control Id="ClusterIp3" Type="Text" X="150" Y="205" Width="80" Height="10" Text="Adapter2 Mask"></Control>
-        <Control Id="vClusterIp3" Type="Edit" X="150" Y="215" Width="80" Height="15" Property="CLUSTERMASK2" />
+        <Control Id="Adapter2Ip" Type="Text" X="150" Y="145" Width="80" Height="10" Text="Adapter2 Ip" />
+        <Control Id="vAdapter2Ip" Type="Edit" X="150" Y="155" Width="80" Height="15" Property="ADAPTERIP2">
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
+        <Control Id="Adapter2vIp" Type="Text" X="150" Y="175" Width="80" Height="10" Text="Adapter2 Virtual Ip" />
+        <Control Id="vAdapter2vIp" Type="Edit" X="150" Y="185" Width="80" Height="15" Property="CLUSTERIP2">
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
+        <Control Id="Adapter2Msc" Type="Text" X="150" Y="205" Width="80" Height="10" Text="Adapter2 Mask" />
+        <Control Id="vAdapter2Msc" Type="Edit" X="150" Y="215" Width="80" Height="15" Property="CLUSTERMASK2">
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
 
-        <Control Id="ClusterMask1" Type="Text" X="240" Y="145" Width="80" Height="10" Text="Adapter3 Ip"></Control>
-        <Control Id="vClusterMask1" Type="Edit" X="240" Y="155" Width="80" Height="15" Property="ADAPTERIP3" />
-        <Control Id="ClusterMask2" Type="Text" X="240" Y="175" Width="80" Height="10" Text="Adapter3 Virtual Ip"></Control>
-        <Control Id="vClusterMask2" Type="Edit" X="240" Y="185" Width="80" Height="15" Property="CLUSTERIP3" />
-        <Control Id="ClusterMask3" Type="Text" X="240" Y="205" Width="80" Height="10" Text="Adapter3 Mask"></Control>
-        <Control Id="vClusterMask3" Type="Edit" X="240" Y="215" Width="80" Height="15" Property="CLUSTERMASK3" />
+        <Control Id="Adapter3Ip" Type="Text" X="240" Y="145" Width="80" Height="10" Text="Adapter3 Ip" />
+        <Control Id="vAdapter3Ip" Type="Edit" X="240" Y="155" Width="80" Height="15" Property="ADAPTERIP3">
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
+        <Control Id="Adapter3vIp" Type="Text" X="240" Y="175" Width="80" Height="10" Text="Adapter3 Virtual Ip" />
+        <Control Id="vAdapter3vIp" Type="Edit" X="240" Y="185" Width="80" Height="15" Property="CLUSTERIP3" >
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
+        <Control Id="Adapter3Msc" Type="Text" X="240" Y="205" Width="80" Height="10" Text="Adapter3 Mask" />
+        <Control Id="vAdapter3Msc" Type="Edit" X="240" Y="215" Width="80" Height="15" Property="CLUSTERMASK3">
+          <Condition Action="disable">SACTAPROXYPRESENT = ""</Condition>
+          <Condition Action="enable">SACTAPROXYPRESENT = "1"</Condition>
+        </Control>
 
         <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
         <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="Back"/>
