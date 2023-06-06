@@ -156,12 +156,22 @@ namespace ClusterSrv
             //cst.ClusterIp2 = st.ClusterIp2;
             //cst.ClusterMask1 = st.ClusterMask1;
             //cst.ClusterMask2 = st.ClusterMask2;
-            cst.VirtualIps = new List<ClusterIpSetting>()
+            if (st.SactaProxyPresent == "1")
             {
-                new ClusterIpSetting(){ AdapterIp = st.AdapterIp1, ClusterIp = st.ClusterIp1, ClusterMsk = st.ClusterMask1, AdapterMask=1, AdapterIndex=-1, VirtualIpContext=-1 },
-                new ClusterIpSetting(){ AdapterIp = st.AdapterIp2, ClusterIp = st.ClusterIp2, ClusterMsk = st.ClusterMask2, AdapterMask=2, AdapterIndex=-1, VirtualIpContext=-1 },
-                new ClusterIpSetting(){ AdapterIp = st.AdapterIp3, ClusterIp = st.ClusterIp3, ClusterMsk = st.ClusterMask3, AdapterMask=4, AdapterIndex=-1, VirtualIpContext=-1 },
-            };
+                cst.VirtualIps = new List<ClusterIpSetting>()
+                {
+                    new ClusterIpSetting(){ AdapterIp = st.AdapterIp1, ClusterIp = st.ClusterIp1, ClusterMsk = st.ClusterMask1, AdapterMask=1, AdapterIndex=-1, VirtualIpContext=-1 },
+                    new ClusterIpSetting(){ AdapterIp = st.AdapterIp2, ClusterIp = st.ClusterIp2, ClusterMsk = st.ClusterMask2, AdapterMask=2, AdapterIndex=-1, VirtualIpContext=-1 },
+                    new ClusterIpSetting(){ AdapterIp = st.AdapterIp3, ClusterIp = st.ClusterIp3, ClusterMsk = st.ClusterMask3, AdapterMask=4, AdapterIndex=-1, VirtualIpContext=-1 },
+                };
+            }
+            else
+            {
+                cst.VirtualIps = new List<ClusterIpSetting>()
+                {
+                    new ClusterIpSetting(){ AdapterIp = st.AdapterIp1, ClusterIp = st.ClusterIp1, ClusterMsk = st.ClusterMask1, AdapterMask=1, AdapterIndex=-1, VirtualIpContext=-1 },
+                };
+            }
             cst.TimeToStart = st.TimeToStart;
             cst.MaintenanceServerForTraps = st.MaintenanceServerForTraps;
             cst.Tick = st.Tick;

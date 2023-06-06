@@ -101,16 +101,6 @@ namespace ClusterLib
         {
             _NodoLocal = false;
             ReplicationServiceState = "0";
-
-            /** AGL. 20170905. Para poder funcionar los contructores por defecto...
-            Settings st = Settings.Default;
-            string cadenaConexion;
-            if (st.CadenaConexion.Length > 0)
-            {
-                cadenaConexion = st.CadenaConexion;
-                MySqlConnectionToCd40 = new MySql.Data.MySqlClient.MySqlConnection(cadenaConexion);
-            }
-             * ***********/
         }
 
         public NodeInfo(ClusterSettings settings)
@@ -119,14 +109,11 @@ namespace ClusterLib
 
             Name = settings.NodeId;
 
-            //AdapterIp1 = settings.AdapterIp1;
-            //AdapterIp2 = settings.AdapterIp2;
-            //VirtualIp1 = settings.ClusterIp1 + "/" + settings.ClusterMask1;
-            //VirtualIp2 = settings.ClusterIp2 + "/" + settings.ClusterMask2;
             AdapterIp1 = settings.VirtualIps.ElementAt(0).AdapterIp;
-            AdapterIp2 = settings.VirtualIps.ElementAt(1).AdapterIp;
             VirtualIp1 = settings.VirtualIps.ElementAt(0).ClusterIp + "/" + settings.VirtualIps.ElementAt(0).ClusterMsk;
-            VirtualIp2 = settings.VirtualIps.ElementAt(1).ClusterIp + "/" + settings.VirtualIps.ElementAt(1).ClusterMsk;
+
+            AdapterIp2 = settings.VirtualIps.Count > 1 ? settings.VirtualIps.ElementAt(1).AdapterIp : "127.0.0.1";
+            VirtualIp2 = settings.VirtualIps.Count > 1 ? settings.VirtualIps.ElementAt(1).ClusterIp + "/" + settings.VirtualIps.ElementAt(1).ClusterMsk : "127.0.0.1/255.255.255.0";
             // La tercera no se mete por compatibilidad....
 
             RemotePrivateIp = settings.EpIp;
@@ -135,107 +122,18 @@ namespace ClusterLib
 
             ReplicationServiceState = "0";
 
-            // AGL, esto era para insertar historicos, lo cual ya no se hace...
-            //Settings st = Settings.Default;
-            //string cadenaConexion;
-            //if (st.CadenaConexion.Length > 0)
-            //{
-            //    cadenaConexion = st.CadenaConexion;
-            //    MySqlConnectionToCd40 = new MySql.Data.MySqlClient.MySqlConnection(cadenaConexion);
-            //}
         }
 
         public void SetState(NodeState state, string changeCause)
         {
             if (state != _State)
             {
-                //if (changeCause != null)
-                //{
-                //    Logger.Info<ClusterState>($"Node {Name}: " + changeCause);
-                //}
-
                 Logger.Info<ClusterState>($"Node {Name}: Change State to {state}. Cause: {changeCause ?? ""}");
-
-                //UtilitiesCD40.GeneraIncidencias.StartSnmp(AdapterIp1, _MaintenanceServerIpForTraps);
-
                 _State = state;
                 _StateBegin = DateTime.Now;
                 _ChangeCause = changeCause;
-
-                /*
-                 switch (_State)
-                 {
-                     case NodeState.Active:
-                        if (_NodoLocal)
-                             CreateEvent(201);
-                         break;
-                     case NodeState.NoActive:
-                        if (_NodoLocal)
-                             CreateEvent(202);
-                         break;
-                     case NodeState.NoValid:
-                         CreateEvent(203);
-                         break;
-                     default:
-                         break;
-                 }
-                 */
             }
         }
-
-        //private void CreateEvent(int idIncidencia)
-        //{
-        //    string consulta;
-        //    string desc = "";
-        //    System.Data.DataSet ds = new System.Data.DataSet();
-
-
-        //    lock (_Sync)
-        //    {
-        //        try
-        //        {
-        //            if (MySqlConnectionToCd40.State != System.Data.ConnectionState.Open)
-        //                MySqlConnectionToCd40.Open();
-
-        //            switch (Settings.Default.Idioma)
-        //            {
-        //                case "en":
-        //                    consulta = string.Format("SELECT descripcion FROM cd40.incidencias_ingles WHERE IdIncidencia={0}", idIncidencia);
-        //                    break;
-        //                case "fr":
-        //                    consulta = string.Format("SELECT descripcion FROM cd40.incidencias_frances WHERE IdIncidencia={0}", idIncidencia);
-        //                    break;
-        //                default:
-        //                    consulta = string.Format("SELECT descripcion FROM cd40.incidencias WHERE IdIncidencia={0}", idIncidencia);
-        //                    break;
-        //            }
-        //            MySqlDataAdapter myDataAdapter = new MySqlDataAdapter(consulta, MySqlConnectionToCd40);
-        //            using (myDataAdapter)
-        //            {
-        //                myDataAdapter.Fill(ds, "TablaCliente");
-        //                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-        //                {
-        //                    desc = (string)ds.Tables[0].Rows[0]["descripcion"];
-        //                    desc = string.Format(desc, Name);
-
-        //                    consulta = string.Format("INSERT INTO cd40.historicoincidencias VALUES ('{0}',0,'CLUSTER',4,{1},NOW(),NULL,'{2}',NULL)", Settings.Default.Sistema, idIncidencia, desc);
-        //                    MySqlCommand myCommand = new MySqlCommand(consulta, MySqlConnectionToCd40);
-        //                    myCommand.ExecuteNonQuery();
-        //                }
-        //            }
-        //        }
-        //        catch (MySqlException mEx)
-        //        {
-        //            Logger.Error(mEx, mEx.Message);
-        //        }
-        //        finally
-        //        {
-        //            //UtilitiesCD40.GeneraIncidencias.SendTrap(AdapterIp1, idIncidencia.ToString(), desc);
-
-        //            MySqlConnectionToCd40.Close();
-        //        }
-        //    }
-        //}
 
         public override string ToString()
         {
@@ -258,7 +156,6 @@ namespace ClusterLib
             this.AdapterIp2 = n.AdapterIp2;
             this.VirtualIp1 = n.VirtualIp1;
             this.VirtualIp2 = n.VirtualIp2;
-            //this.SetState(n.State, n.ChangeCause);
             this._State = n._State;
             this._StateBegin = n._StateBegin;
             this._ChangeCause = n._ChangeCause;
@@ -324,14 +221,6 @@ namespace ClusterLib
             LocalNode = new NodeInfo();
             RemoteNode = new NodeInfo();
             DataReplication = new DataReplicacionState();
-
-            /** AGL. 20170905. Para poder funcionar los contructores por defecto...
-             _ReplicationServiceTimer = new Timer(_ReplicationServiceInterval);
-             _ReplicationServiceTimer.AutoReset = false;
-             _ReplicationServiceTimer.Elapsed += ReplicationServiceTask;
-
-             ReplicationServiceTask(null, null);
-             * */
         }
 
         public ClusterState(ClusterSettings settings)
@@ -357,16 +246,21 @@ namespace ClusterLib
         {
             try
             {
+#if DEBUG
+
+                Logger.Info<ClusterState>("ReplicationServiceTask!");
+#else
                 // Cada servidor se va a encargar de recopilar la información del estado 
                 // del servicio de la replicación
                 string proceso = "replication_status.bat";
                 LocalNode.ReplicationServiceState = ExecCommand(PrepareCommand(proceso)).ToString();
-                Console.WriteLine("Replication status: " + LocalNode.ReplicationServiceState);
+                Logger.Info< ClusterState>("Replication status: " + LocalNode.ReplicationServiceState);
 
                 // Cada servidor va a recopilar la información del 
                 // estado de los datos de la replicación propios
                 GetDataReplicationStatus();
                 GetInfo();
+#endif
             }
             catch (Exception x)
             {

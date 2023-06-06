@@ -141,6 +141,8 @@ namespace ClusterLib
                 try
                 {
                     Logger.Info<Cluster>("Deleting ARP Table...");
+#if DEBUG
+#else
                     if (SimulatedAdapters == 0)
                     {
                         System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -152,6 +154,7 @@ namespace ClusterLib
                         process.Start();
                         process.WaitForExit();
                     }
+#endif
                     System.Threading.Thread.Sleep(1000);
                     Logger.Info<Cluster>("ARP Table Deleted.");
                 }
@@ -716,6 +719,6 @@ namespace ClusterLib
             });
         }
 
-        #endregion
+#endregion
     }
 }
