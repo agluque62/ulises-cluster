@@ -276,19 +276,20 @@ namespace ClusterLib
             // AGL. 3ª IP
             _Settings.VirtualIps.ForEach(ipc =>
             {
-                try
-                {
-                    var reply = (new Ping()).Send(ipc.ClusterIp, 500);
-                    Logger.Trace<Cluster>(String.Format("PingReply {1,8} From {0,15}, {2,6} ms",
-                        reply.Address != null ? reply.Address.ToString() : ipc.ClusterIp, reply.Status.ToString(), reply.RoundtripTime));
+                //try
+                //{
+                //    var reply = (new Ping()).Send(ipc.ClusterIp, 500);
+                //    Logger.Trace<Cluster>(String.Format("PingReply {1,8} From {0,15}, {2,6} ms",
+                //        reply.Address != null ? reply.Address.ToString() : ipc.ClusterIp, reply.Status.ToString(), reply.RoundtripTime));
 
-                    if (reply != null && reply.Status == IPStatus.Success)
-                        retorno = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Exception<Cluster>(ex, $" PING to {ipc.ClusterIp} Exception. ");
-                }
+                //    if (reply != null && reply.Status == IPStatus.Success)
+                //        retorno = true;
+                //}
+                //catch (Exception ex)
+                //{
+                //    Logger.Exception<Cluster>(ex, $" PING to {ipc.ClusterIp} Exception. ");
+                //}
+                retorno = retorno | IsAddressAlive(ipc);
             });
 
             return retorno;
@@ -311,23 +312,24 @@ namespace ClusterLib
                 _Settings.VirtualIps
                     .Where(i=>i.AdapterIndex!=-1)           // Se filtran las no presentes para que no den error....
                     .ToList()
-                    .ForEach(ips =>
+                    .ForEach(ips => 
                     {
-                    Task<bool> t = Task.Run(() =>
-                    {
-                        try
-                        {
-                            ips.VirtualIpContext = Native.IpHlpApi.AddIPAddress(ips.ClusterIp, ips.ClusterMsk, ips.AdapterIndex);
-                            Logger.Info<Cluster>(String.Format("Virtual IP {0} Created...", ips.ClusterIp));
-                            return false;
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Exception<Cluster>(ex, ips.ClusterIp);
-                            return true;
-                        }
-                    });
-                    if (t.Result == true) GlobalError = true;
+                    //Task<bool> t = Task.Run(() =>
+                    //{
+                    //    try
+                    //    {
+                    //        ips.VirtualIpContext = Native.IpHlpApi.AddIPAddress(ips.ClusterIp, ips.ClusterMsk, ips.AdapterIndex);
+                    //        Logger.Info<Cluster>(String.Format("Virtual IP {0} Created...", ips.ClusterIp));
+                    //        return false;
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        Logger.Exception<Cluster>(ex, ips.ClusterIp);
+                    //        return true;
+                    //    }
+                    //});
+                    //if (t.Result == true) GlobalError = true;
+                    GlobalError = GlobalError | CreateIpAddress(ips);
                 });
                 error(GlobalError);
             }
@@ -344,26 +346,27 @@ namespace ClusterLib
                 _Settings.VirtualIps.ForEach(ips =>
                 {
                     //Task.Factory.StartNew(() => ForceDeleteVirtualAddressTask(ips)).Wait();
-                    Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            if (ips.VirtualIpContext >= 0)
-                            {
-                                Native.IpHlpApi.DeleteIPAddressOnContext(ips.VirtualIpContext);
-                                ips.VirtualIpContext = -1;
-                            }
-                            else
-                            {
-                                Native.IpHlpApi.DeleteIPAddress(ips.ClusterIp);
-                            }
-                            Logger.Info<Cluster>(String.Format("Virtual IP {0} Deleted.", ips.ClusterIp));
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Exception<Cluster>(ex, $"Exception deleting the Virtual IP {ips.ClusterIp}. ");
-                        }
-                    }).Wait();
+                    //Task.Factory.StartNew(() =>
+                    //{
+                    //    try
+                    //    {
+                    //        if (ips.VirtualIpContext >= 0)
+                    //        {
+                    //            Native.IpHlpApi.DeleteIPAddressOnContext(ips.VirtualIpContext);
+                    //            ips.VirtualIpContext = -1;
+                    //        }
+                    //        else
+                    //        {
+                    //            Native.IpHlpApi.DeleteIPAddress(ips.ClusterIp);
+                    //        }
+                    //        Logger.Info<Cluster>(String.Format("Virtual IP {0} Deleted.", ips.ClusterIp));
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        Logger.Exception<Cluster>(ex, $"Exception deleting the Virtual IP {ips.ClusterIp}. ");
+                    //    }
+                    //}).Wait();
+                    DeleteIpAddress(ips);
                 });
             }
         }
@@ -702,6 +705,7 @@ namespace ClusterLib
                         }
                         _State.LocalNode.SetState(NodeState.NoValid, Resources.DeactivateByNotAdapters);
                     }
+                    SuperviseVirtualIps();
                 }
                 catch (Exception ex)
                 {
@@ -718,7 +722,105 @@ namespace ClusterLib
                 }
             });
         }
+        bool IsAddressAlive(ClusterIpSetting ips)
+        {
+            try
+            {
+                var reply = (new Ping()).Send(ips.ClusterIp, 500);
+                Logger.Trace<Cluster>(String.Format("PingReply {1,8} From {0,15}, {2,6} ms",
+                    reply.Address != null ? reply.Address.ToString() : ips.ClusterIp, reply.Status.ToString(), reply.RoundtripTime));
 
-#endregion
+                return (reply != null && reply.Status == IPStatus.Success);
+            }
+            catch (Exception ex)
+            {
+                Logger.Exception<Cluster>(ex, $" PING to {ips.ClusterIp} Exception. ");
+            }
+            return false;
+        }
+        bool CreateIpAddress(ClusterIpSetting ips)
+        {
+            Task<bool> t = Task.Run(() =>
+            {
+                try
+                {
+                    ips.VirtualIpContext = Native.IpHlpApi.AddIPAddress(ips.ClusterIp, ips.ClusterMsk, ips.AdapterIndex);
+                    Logger.Info<Cluster>(String.Format("Virtual IP {0} Created...", ips.ClusterIp));
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Exception<Cluster>(ex, ips.ClusterIp);
+                    return true;
+                }
+            });
+            return t.Result;
+        }
+        void DeleteIpAddress(ClusterIpSetting ips)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    if (ips.VirtualIpContext >= 0)
+                    {
+                        Native.IpHlpApi.DeleteIPAddressOnContext(ips.VirtualIpContext);
+                        ips.VirtualIpContext = -1;
+                    }
+                    else
+                    {
+                        Native.IpHlpApi.DeleteIPAddress(ips.ClusterIp);
+                    }
+                    Logger.Info<Cluster>(String.Format("Virtual IP {0} Deleted.", ips.ClusterIp));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Exception<Cluster>(ex, $"Exception deleting the Virtual IP {ips.ClusterIp}. ");
+                }
+            }).Wait();
+        }
+        void SuperviseVirtualIps()
+        {
+            Logger.Trace<Cluster>($"SuperviseVirtualIps ENTRY.");
+            if (LastVirtualIps != null)
+            {
+                var lastActives = LastVirtualIps.Where(e => e.AdapterIndex != -1);
+                var actualActives = _Settings.VirtualIps.Where(e => e.AdapterIndex != -1);
+                var newActives = actualActives.Except(lastActives, new ClusterIpSettingComparer());
+                var newNoActives = lastActives.Except(actualActives, new ClusterIpSettingComparer());
+
+                Logger.Trace<Cluster>($"Last Actives {lastActives.Count()}, Current Actives {actualActives.Count()} => New Actives {newActives.Count()}, New NoActives {newNoActives.Count()}");
+                foreach (var noactive in newNoActives) 
+                {
+                    DeleteIpAddress(noactive);
+                }
+                if (_State.LocalNode.State == NodeState.Active)
+                {
+                    foreach (var active in newActives)
+                    {
+                        CreateIpAddress(active);
+                    }
+                }
+            }
+            LastVirtualIps = _Settings.VirtualIps
+                .Select(x => new ClusterIpSetting(x))
+                .ToList();
+            Logger.Trace<Cluster>($"SuperviseVirtualIps EXIT.");
+        }
+        private List<ClusterIpSetting> LastVirtualIps = null;
+        class ClusterIpSettingComparer : IEqualityComparer<ClusterIpSetting>
+        {
+            public bool Equals(ClusterIpSetting x, ClusterIpSetting y)
+            {
+                return x.AdapterIp == y.AdapterIp;
+            }
+
+            public int GetHashCode(ClusterIpSetting obj)
+            {
+                return obj.AdapterIp.GetHashCode();
+            }
+        }
+
+        #endregion
     }
 }
