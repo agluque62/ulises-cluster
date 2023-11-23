@@ -13,6 +13,18 @@ namespace ClusterLib
 
         public int AdapterIndex { get; set; }
         public int VirtualIpContext { get; set; }
+
+        public ClusterIpSetting() { }
+        public ClusterIpSetting(ClusterIpSetting other)
+        {
+            AdapterIp = other.AdapterIp;
+            AdapterMask = other.AdapterMask;
+            AdapterIndex = other.AdapterIndex;
+
+            ClusterIp = other.ClusterIp;
+            ClusterMsk = other.ClusterMsk;
+            VirtualIpContext = other.VirtualIpContext;
+        }
     }
     public class ClusterSettings
     {

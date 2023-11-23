@@ -9,10 +9,10 @@
       <Value Profile="(Default)">6001</Value>
     </Setting>
     <Setting Name="ClusterIp1" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.12.90.99</Value>
+      <Value Profile="(Default)">11.12.91.99</Value>
     </Setting>
     <Setting Name="ClusterIp2" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.20.90.99</Value>
+      <Value Profile="(Default)">11.20.91.99</Value>
     </Setting>
     <Setting Name="ClusterMask1" Type="System.String" Scope="Application">
       <Value Profile="(Default)">255.255.255.0</Value>
@@ -21,28 +21,28 @@
       <Value Profile="(Default)">255.255.255.0</Value>
     </Setting>
     <Setting Name="Ip" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">192.168.0.1</Value>
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="EpIp" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">192.168.0.1</Value>
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="TimeToStart" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">10000</Value>
     </Setting>
     <Setting Name="AdapterIp2" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.20.90.1</Value>
+      <Value Profile="(Default)">11.20.91.1</Value>
     </Setting>
     <Setting Name="MaintenanceServerForTraps" Type="System.String" Scope="Application">
       <Value Profile="(Default)">192.168.0.129</Value>
     </Setting>
     <Setting Name="AdapterIp1" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.12.90.1</Value>
+      <Value Profile="(Default)">11.12.91.1</Value>
     </Setting>
     <Setting Name="AdapterIp3" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.21.94.1</Value>
+      <Value Profile="(Default)">11.21.91.1</Value>
     </Setting>
     <Setting Name="ClusterIp3" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.21.94.99</Value>
+      <Value Profile="(Default)">11.21.91.99</Value>
     </Setting>
     <Setting Name="ClusterMask3" Type="System.String" Scope="Application">
       <Value Profile="(Default)">255.255.255.0</Value>
@@ -54,7 +54,7 @@
       <Value Profile="(Default)">5000</Value>
     </Setting>
     <Setting Name="SactaProxyPresent" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
